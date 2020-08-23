@@ -13,12 +13,12 @@ fn main() {
 	let contents = fs::read_to_string(cfg.filename)
 		.expect("Something went wrong reading the file");
 	
-	let res = find_strings(&contents, &cfg.query);
-	res.iter().for_each(|line| println!("{:#?}", line));
+	find_strings(&contents, &cfg.query)
+	.iter().for_each(|line| println!("{:#?}", line));
 }
 
 fn find_strings<'a>(text: &'a str, slice: &'a str) -> Vec<&'a str> {
 	text.lines().filter(|line| line
 		.contains(slice))
-		.collect::<Vec<_>>()
+		.collect()
 }

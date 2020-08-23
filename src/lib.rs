@@ -1,3 +1,6 @@
+use std::error::Error;
+use std::fs;
+
 #[derive(Debug, PartialEq)]
 pub struct Config {
 	pub query: String,
@@ -21,6 +24,16 @@ pub fn find_strings<'a>(text: &'a str, slice: &'a str) -> Vec<&'a str> {
 	text.lines().filter(|line| line
 		.contains(slice))
 	    .collect()
+}
+
+
+pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
+	let contents = fs::read_to_string(config.filename)?;
+	
+	find_strings(&contents, &config.query)
+		.iter().for_each(|line| println!("{:#?}", line));
+	
+	Ok(())
 }
 
 

@@ -20,7 +20,7 @@ impl Config {
 	}
 }
 
-pub fn find_strings<'a>(text: &'a str, slice: &'a str) -> Vec<&'a str> {
+pub fn search<'a>(text: &'a str, slice: &'a str) -> Vec<&'a str> {
 	text.lines().filter(|line| line
 		.contains(slice))
 	    .collect()
@@ -30,7 +30,7 @@ pub fn find_strings<'a>(text: &'a str, slice: &'a str) -> Vec<&'a str> {
 pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
 	let contents = fs::read_to_string(config.filename)?;
 	
-	find_strings(&contents, &config.query)
+	search(&contents, &config.query)
 		.iter().for_each(|line| println!("{:#?}", line));
 	
 	Ok(())
@@ -48,6 +48,20 @@ mod tests {
 			.collect();
 		let act = Config::new(args.as_ref());
 		let exp = Config::new(&args);
+		assert_eq!(act, exp);
+	}
+	
+	#[test]
+	fn one_result() {
+		let query = "duct";
+		let contents = "\
+Rust:
+safe, fast, productive.
+Pick three.";
+		
+		let exp = vec!["safe, fast, productive."];
+		let act = search(contents, query);
+		
 		assert_eq!(act, exp);
 	}
 }

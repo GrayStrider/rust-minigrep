@@ -4,9 +4,7 @@ $env:RUSTDOCFLAGS="-Cpanic=abort"
 
 cargo +nightly build
 
-cargo test
+cargo +nightly test
 
-grcov ./target/debug/ -s . -t coveralls+ --llvm --branch --ignore-not-existing -o ./target/debug/coverage/
-
-
-pause
+New-Item -ErrorAction Ignore -ItemType directory -Path coverage > $null
+grcov ./target/debug/ -s . -t lcov --llvm --branch --ignore-not-existing -o .\coverage\lcov.info

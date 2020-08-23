@@ -1,5 +1,5 @@
 use std::{env, fs, process};
-use minigrep::Config;
+use minigrep::{Config, find_strings};
 
 fn main() {
 	let args: Vec<String> = env::args().collect();
@@ -17,8 +17,3 @@ fn main() {
 	.iter().for_each(|line| println!("{:#?}", line));
 }
 
-fn find_strings<'a>(text: &'a str, slice: &'a str) -> Vec<&'a str> {
-	text.lines().filter(|line| line
-		.contains(slice))
-		.collect()
-}
